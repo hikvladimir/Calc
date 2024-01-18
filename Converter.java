@@ -35,7 +35,7 @@ public class Converter {
     }
 
     //15
-    public String intToRoman(int number) {
+    public String intToRoman(int number) throws NullPointerException{
         String roman = "";
         int arabianKey;
         do {

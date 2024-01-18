@@ -1,73 +1,78 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-
+    public static int calc (String exp) throws  NullPointerException {
         Converter converter = new Converter();
         String[] actions = {"+", "-", "/", "*"};
         String[] regexActions = {"\\+", "-", "/", "\\*"};
-        Scanner scn = new Scanner(System.in);
-        System.out.print("Введите выражение: ");
-        String exp = scn.nextLine();
+        int actionIndex = -1;
 
-        int actionIndex=-1;
         for (int i = 0; i < actions.length; i++) {
-            if(exp.contains(actions[i])){
+            if (exp.contains(actions[i])) {
                 actionIndex = i;
                 break;
             }
         }
 
-        if(actionIndex==-1){
+        if (actionIndex == -1) {
             System.out.println("Некорректное выражение");
-            return;
-        }
-
-
+                  }
+            exp=exp.replaceAll(" ", "");
 
         String[] data = exp.split(regexActions[actionIndex]);
 
-        if(converter.isRoman(data[0]) == converter.isRoman(data[1])){
-            int a,b;
+        int result = 0;
+        if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
+            int a, b;
             boolean isRoman = converter.isRoman(data[0]);
-            if(isRoman){
+            if (isRoman) {
 
                 a = converter.romanToInt(data[0]);
                 b = converter.romanToInt(data[1]);
 
-            }else{
+            } else {
 
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
             }
 
-            int result;
-            switch (actions[actionIndex]){
+            switch (actions[actionIndex]) {
                 case "+":
-                    result = a+b;
+                    result = a + b;
                     break;
                 case "-":
-                    result = a-b;
+                    result = a - b;
                     break;
                 case "*":
-                    result = a*b;
+                    result = a * b;
                     break;
                 default:
-                    result = a/b;
+                    result = a / b;
                     break;
             }
             //15->XV
-            if(isRoman){
+            if (isRoman) {
 
                 System.out.println(converter.intToRoman(result));
-            }
-            else{
+            } else {
                 System.out.println(result);
             }
-        }else{
+        } else {
             System.out.println("Числа должны быть в одном формате");
         }
+        return result;
+    }
+    public static void main(String[] args) {
 
+
+        Scanner scn = new Scanner(System.in);
+        String exp = scn.nextLine();
+        try {
+            calc(exp);
+        } catch (NullPointerException e) {
+            System.out.println("в римской системе нет отрицательных чисел");
+        }
 
     }
+
 }
