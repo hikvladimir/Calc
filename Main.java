@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    public static int calc (String exp) throws  NullPointerException {
+    public static int calc (String exp) throws  NullPointerException, ArrayIndexOutOfBoundsException {
         Converter converter = new Converter();
         String[] actions = {"+", "-", "/", "*"};
         String[] regexActions = {"\\+", "-", "/", "\\*"};
@@ -14,9 +14,7 @@ public class Main {
             }
         }
 
-        if (actionIndex == -1) {
-            System.out.println("Некорректное выражение");
-                  }
+
             exp=exp.replaceAll(" ", "");
 
         String[] data = exp.split(regexActions[actionIndex]);
@@ -72,6 +70,9 @@ public class Main {
         } catch (NullPointerException e) {
             System.out.println("в римской системе нет отрицательных чисел");
         }
+     catch ( ArrayIndexOutOfBoundsException e) {
+        System.out.println("строка не является математической операцией");
+    }
 
     }
 
