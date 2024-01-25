@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
+
 public class Main {
-    public static int calc (String exp) throws  NullPointerException, ArrayIndexOutOfBoundsException {
+
+    public static String calc(String exp) throws Exception {
         Converter converter = new Converter();
         String[] actions = {"+", "-", "/", "*"};
         String[] regexActions = {"\\+", "-", "/", "\\*"};
@@ -14,10 +16,20 @@ public class Main {
             }
         }
 
+        if (actionIndex == -1) {
+            throw new Exception("меньше 2 операндов!");
+        }
 
-            exp=exp.replaceAll(" ", "");
+        exp = exp.replaceAll(" ", "");
 
         String[] data = exp.split(regexActions[actionIndex]);
+
+        if (data.length < 2) {
+            throw new Exception("меньше 2 операндов!");
+        }
+        if (data.length > 2) {
+            throw new Exception("больше 2 операндов!");
+        }
 
         int result = 0;
         if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
@@ -32,6 +44,10 @@ public class Main {
 
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
+            }
+
+            if (a < 1 || a > 10 || b < 1 || b > 10) {
+                throw new Exception("число меньше 1 либо больше 10");
             }
 
             switch (actions[actionIndex]) {
@@ -50,30 +66,37 @@ public class Main {
             }
             //15->XV
             if (isRoman) {
-
-                System.out.println(converter.intToRoman(result));
+                if (result < 0) {
+                    throw new Exception("в римской системе нет отрицательных чисел");
+                }
+                return converter.intToRoman(result);
             } else {
-                System.out.println(result);
+                return "" + result;
             }
         } else {
-            System.out.println("Числа должны быть в одном формате");
+            throw new Exception("Числа должны быть в одном формате");
         }
-        return result;
     }
+
+    // "1 + 2"
+    // "0 + 9"
+    // "I + XX"
+    // "I + 4"
+    // "I - II"
+    // "IIII + VIIIII"
+    // "VI / III"
+    // "1 + 2 + 3"
+    // "1"
+
     public static void main(String[] args) {
-
-
         Scanner scn = new Scanner(System.in);
         String exp = scn.nextLine();
         try {
-            calc(exp);
-        } catch (NullPointerException e) {
-            System.out.println("в римской системе нет отрицательных чисел");
+            String resultat = calc(exp);
+            System.out.println(resultat);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-     catch ( ArrayIndexOutOfBoundsException e) {
-        System.out.println("строка не является математической операцией");
     }
-
-    }
-
 }
+
